@@ -1,42 +1,1024 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AIRFA · 机房主机公网入口</title>
-  <meta name="description" content="AIRFA 的个人站点：项目、实验与技术记录。">
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1668dc">
+<title>后勤综合服务指南</title>
+<script src="vendor/cloud-sdk.js"></script>
+<script>
+window.__CLOUD_CONFIG__={endpoint:"https://campus-service-guide.app.workbuddy.host",publishableKey:"wbpk_YZbQHhWvvedJ30X81RyGyZ_47GwNjj6IXlK4oW1ApEOmzVDkid4AvRe"};
+</script>
+<style id="app-css">
+:root{
+  --bg:#f2f4f7; --card:#fff; --text:#1f2328; --sub:#6b7280; --line:#e6e8eb;
+  --primary:#1668dc; --primary-soft:#e8f1fd; --green:#12a150; --amber:#b06000;
+  --amber-bg:#fff7e6; --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:#dfe3e8; color:var(--text);
+  font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+}
+#app{max-width:720px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:env(safe-area-inset-bottom)}
+img{max-width:100%;display:block}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,textarea,select{font-family:inherit;font-size:15px;color:var(--text)}
+
+/* ---------- 顶栏 ---------- */
+.topbar{
+  position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:6px;padding:10px 12px;
+  padding-top:calc(10px + env(safe-area-inset-top));
+}
+.topbar .tb-btn{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:var(--primary)}
+.topbar .tb-btn:active{background:var(--primary-soft)}
+.topbar .tb-title{flex:1;font-size:17px;font-weight:600;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.topbar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.edit-tip{background:#fff4e0;color:#8a4b00;font-size:13px;padding:6px 14px;border-bottom:1px solid #ffdca8;text-align:center}
+
+/* ---------- 通用 ---------- */
+.wrap{padding:12px}
+.sec-title{font-size:13px;color:var(--sub);margin:16px 12px 8px;font-weight:600;letter-spacing:.5px}
+.search-box{position:sticky;top:56px;z-index:20;padding:10px 12px;background:var(--bg)}
+.search-in{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.search-in svg{width:18px;height:18px;stroke:var(--sub);fill:none;stroke-width:2;flex:0 0 auto}
+.search-in input{flex:1;border:0;outline:none;background:none;min-width:0}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 12px 12px}
+.card{background:var(--card);border-radius:var(--radius);padding:14px 12px;box-shadow:0 1px 3px rgba(20,30,50,.06);position:relative;text-align:left;display:block;width:100%}
+.card:active{background:#f7f9fc}
+.card .ic{width:42px;height:42px;border-radius:12px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:8px}
+.card .t{font-weight:600;font-size:15px;line-height:1.35}
+.card .d{font-size:12.5px;color:var(--sub);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .badge{position:absolute;top:10px;right:10px;font-size:11px;color:var(--sub)}
+
+.list{padding:0 12px 12px}
+.row{display:flex;align-items:center;gap:12px;background:#fff;border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(20,30,50,.06)}
+.row .ic{width:40px;height:40px;flex:0 0 auto;border-radius:11px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:21px}
+.row .m{flex:1;min-width:0}
+.row .m .t{font-weight:600}
+.row .m .d{font-size:12.5px;color:var(--sub);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .arrow{color:#c3c8cf;flex:0 0 auto}
+
+.crumb{display:flex;flex-wrap:wrap;gap:4px;padding:10px 12px 0;font-size:13px;color:var(--sub)}
+.crumb button{color:var(--primary)}
+.crumb span{color:#c3c8cf}
+
+.empty{text-align:center;color:var(--sub);padding:40px 20px;font-size:14px}
+
+/* ---------- 内容块 ---------- */
+.block{background:#fff;border-radius:var(--radius);padding:14px;margin:0 12px 12px;box-shadow:0 1px 3px rgba(20,30,50,.06);position:relative}
+.block h3{margin:0 0 10px;font-size:15px;font-weight:600;display:flex;align-items:center;gap:6px}
+.block h3:before{content:"";width:3px;height:14px;background:var(--primary);border-radius:2px}
+.kv{display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.kv:last-child{border-bottom:0}
+.kv .k{color:var(--sub);flex:0 0 78px}
+.kv .v{flex:1;word-break:break-all}
+.steps{padding-left:0;margin:0;list-style:none}
+.steps li{position:relative;padding:0 0 14px 26px;font-size:14px}
+.steps li:before{content:attr(data-i);position:absolute;left:0;top:0;width:19px;height:19px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.steps li:after{content:"";position:absolute;left:9px;top:22px;bottom:0;width:1px;background:var(--line)}
+.steps li:last-child{padding-bottom:0}
+.steps li:last-child:after{display:none}
+.ct{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.ct:last-child{border-bottom:0}
+.ct .n{font-weight:600;font-size:14px}
+.ct .p{color:var(--primary);font-size:14px;text-decoration:none;font-weight:600}
+.ct .nt{font-size:12.5px;color:var(--sub)}
+.text{white-space:pre-wrap;font-size:14.5px;line-height:1.75}
+.tip{background:var(--amber-bg);border:1px solid #ffe0ac;color:#8a5300;border-radius:10px;padding:10px 12px;font-size:13.5px;white-space:pre-wrap}
+.imgcap{font-size:12.5px;color:var(--sub);margin-top:6px;text-align:center}
+.blk-img{border-radius:10px;width:100%}
+.linkbtn{display:block;background:var(--primary-soft);color:var(--primary);border-radius:10px;padding:11px 14px;font-weight:600;font-size:14.5px;text-decoration:none;text-align:center}
+.linkbtn .sub{display:block;font-weight:400;font-size:12.5px;color:var(--sub);margin-top:2px}
+.favbar{display:flex;justify-content:center;padding:4px 0 14px}
+.favbtn{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 18px;font-size:14px;color:var(--sub)}
+.favbtn.on{background:#fff6e0;border-color:#ffd591;color:#b06000}
+
+/* ---------- 编辑模式 ---------- */
+body.editing .card,body.editing .row{outline:1px dashed #bcd4f5;outline-offset:-1px}
+.ed-act{position:absolute;top:6px;right:6px;display:flex;gap:4px;z-index:2}
+.row{position:relative}
+.ed-act button{width:26px;height:26px;border-radius:8px;background:#eef3f9;color:#1668dc;font-size:13px;display:flex;align-items:center;justify-content:center}
+.ed-act button.del{color:#d4380d;background:#fdeceb}
+.block .ed-act button{background:#eef3f9}
+.addbtn{display:block;width:calc(100% - 24px);margin:0 12px 14px;padding:11px;border:1px dashed #9dbde6;border-radius:12px;color:var(--primary);background:#fff;font-size:14px}
+.editbar{position:sticky;bottom:0;z-index:30;display:flex;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+.editbar button{flex:1;background:var(--primary-soft);color:var(--primary);border-radius:10px;padding:10px 4px;font-size:14px;font-weight:600}
+.editbar button.ghost{background:#f0f2f5;color:var(--sub)}
+.sync{font-size:12.5px;padding:7px 14px;line-height:1.5}
+.sync.off{background:#fff4e0;color:#8a4b00}
+.sync.warn{background:#fff4e0;color:#8a4b00}
+.sync.ok{background:#e8f7ee;color:#12a150}
+.page-foot{text-align:center;color:var(--sub);font-size:13.5px;padding:10px 12px 24px;letter-spacing:1px}
+.page-foot-sub{text-align:center;color:#a9b0b8;font-size:11.5px;margin-top:-18px;padding-bottom:22px}
+.syncbar-mini{text-align:center;font-size:11.5px;color:#a9b0b8;padding:0 12px 14px}
+
+/* ---------- 弹窗 ---------- */
+.mask{position:fixed;inset:0;background:rgba(15,23,32,.45);z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;width:100%;max-width:720px;border-radius:16px 16px 0 0;max-height:88vh;display:flex;flex-direction:column;animation:up .18s ease}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+.modal header{padding:14px 16px;border-bottom:1px solid var(--line);font-weight:600;display:flex;align-items:center}
+.modal header .x{margin-left:auto;color:var(--sub);font-size:22px;line-height:1}
+.modal .body{padding:14px 16px;overflow:auto;-webkit-overflow-scrolling:touch}
+.modal footer{padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px}
+.modal footer button{flex:1;padding:12px;border-radius:10px;font-weight:600}
+.btn-p{background:var(--primary);color:#fff}
+.btn-g{background:#f0f2f5;color:#444}
+.btn-d{background:#fdeceb;color:#d4380d}
+.fld{margin-bottom:12px}
+.fld label{display:block;font-size:13px;color:var(--sub);margin-bottom:5px}
+.fld input[type=text],.fld textarea,.fld select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none;background:#fff}
+.fld textarea{min-height:88px;resize:vertical;line-height:1.6}
+.fld input:focus,.fld textarea:focus{border-color:var(--primary)}
+.hint{font-size:12px;color:var(--sub);margin-top:4px}
+.emoji-pick{display:flex;flex-wrap:wrap;gap:6px}
+.emoji-pick button{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;font-size:19px;background:#fff}
+.emoji-pick button.sel{border-color:var(--primary);background:var(--primary-soft)}
+.img-prev{width:100%;border-radius:10px;margin-top:8px;border:1px solid var(--line)}
+.mini{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:14px;margin-bottom:10px;display:block;width:100%;text-align:left}
+.mini.warn{background:#fdeceb;border-color:#f7c9c4;color:#d4380d}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:88px;background:rgba(20,30,40,.9);color:#fff;padding:10px 16px;border-radius:20px;font-size:14px;z-index:99;max-width:80%;text-align:center}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}}
+</style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>AIRFA</h1>
-    <p class="sub">机房主机公网入口 · <code>gdzyhqb.v6.rocks</code></p>
-  </header>
-
-  <section class="card">
-    <h3>在线演示</h3>
-    <p>机房这台机器上直接跑的服务，经 Cloudflare 隧道回源，标准 443。</p>
-    <a class="btn" href="https://masters-hottest-isolated-stanley.trycloudflare.com">打开演示站</a>
-  </section>
-
-  <section class="card">
-    <h3>项目</h3>
-    <p>改这一块就行：把标题、描述、链接换成你写的东西。</p>
-    <a class="btn" href="https://krivy.cyou">主站 krivy.cyou</a>
-  </section>
-
-  <section class="card">
-    <h3>怎么部署</h3>
-    <p>改完文件，在 <code>is-a-dev-register</code> 目录执行 <code>node deploy.mjs site</code>，几十秒后这个页面就更新了。</p>
-  </section>
-
-  <footer>
-    由 GitHub Pages 提供托管 · <span id="t"></span>
-  </footer>
+<script type="text/plain" id="tpl-body">
+<div id="app">
+  <div class="topbar">
+    <button class="tb-btn" id="btn-back" style="visibility:hidden">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="tb-title" id="tb-title">后勤综合服务指南</div>
+    <button class="tb-btn" id="btn-menu">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H2a2 2 0 110-4h.09A1.65 1.65 0 004.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 3.6 1.65 1.65 0 0010 2.09V2a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </button>
+  </div>
+  <div id="edit-tip" class="edit-tip" hidden>编辑模式已开启 — 可直接修改文字和图片</div>
+  <main id="view"></main>
+  <div id="editbar"></div>
 </div>
+<div id="modal-root"></div>
+<div id="toast" class="toast" hidden></div>
+</script>
+
+<script type="text/plain" id="app-js">
+(function(){
+'use strict';
+var K={data:'hq_guide_data_v1',fav:'hq_guide_fav_v1',edit:'hq_guide_edit_v1',pwd:'hq_guide_pwd_v1'};
+var data=null,favs=[],editMode=false,curId=null,query='';
+var cloud=null,me=null,cloudRow=null,cloudOnline=false;
+var DEF_FOOTER='后勤基建部 编制 V1';
+var $=function(id){return document.getElementById(id);};
+
+/* ============ 工具 ============ */
+function uid(){return 'n'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=$('toast');t.textContent=m;t.hidden=false;clearTimeout(t._t);t._t=setTimeout(function(){t.hidden=true;},2200);}
+function safeUrl(u){u=String(u||'').trim();if(!u)return '';return /^(https?:|tel:|mailto:)/i.test(u)?u:'http://'+u;}
+function download(name,content,type){
+  var b=new Blob([content],{type:type||'text/plain;charset=utf-8'});
+  var u=URL.createObjectURL(b),a=document.createElement('a');
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(u);a.remove();},600);
+}
+function compressImg(file,cb){
+  var r=new FileReader();
+  r.onload=function(e){
+    var im=new Image();
+    im.onload=function(){
+      var max=1280,w=im.width,h=im.height,s=Math.min(1,max/Math.max(w,h));
+      var c=document.createElement('canvas');
+      c.width=Math.round(w*s);c.height=Math.round(h*s);
+      c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      cb(c.toDataURL('image/jpeg',0.82));
+    };
+    im.src=e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+
+/* ============ 示例内容（可随时在编辑模式里改掉） ============ */
+function info(t,a){return {type:'info',title:t,items:a.map(function(s){var i=s.indexOf('|');return {label:i<0?s:s.slice(0,i),value:i<0?'':s.slice(i+1)};})};}
+function steps(t,a){return {type:'steps',title:t,items:a.slice()};}
+function ct(t,a){return {type:'contact',title:t,items:a.map(function(s){var p=s.split('|');return {name:p[0]||'',phone:p[1]||'',note:p[2]||''};})};}
+function tip(v){return {type:'tip',value:v};}
+function txt(t,v){return {type:'text',title:t,value:v};}
+function lnk(t,u,d){return {type:'link',title:t,url:u,desc:d};}
+function N(icon,title,desc,blocks,children){
+  return {id:uid(),icon:icon,title:title,desc:desc||'',blocks:blocks||[],children:children||[]};
+}
+var SAMPLE={title:'后勤综合服务指南',footer:'后勤基建部 编制 V1',nodes:[
+ N('🏫','中心校区','主校区 · 服务网点最齐全',[
+   info('校区信息',['地址|中心校区 1 号路（示例内容，请按实际修改）','物业总值班|010-0000 0000','服务时间|工作日 8:00-17:30','后勤服务大厅|综合楼一层 101']),
+   tip('点击下方卡片查看具体服务的地点、办理流程与联系方式。')
+ ],[
+  N('🏥','医务室','门诊 / 急诊 / 转诊 / 医保',[
+    info('基本信息',['位置|中心校区生活区 A 座一层（示例）','门诊时间|工作日 8:00-11:30、14:00-17:30','急诊|24 小时值班','结算方式|校园卡或医保直接结算']),
+    steps('就诊流程',['导诊台出示校园卡或身份证挂号','分诊台测量体温并登记信息','候诊区等待叫号','医生问诊并开具处方','收费窗口缴费（校园卡 / 微信 / 现金）','药房取药并核对清单','需校外转诊时索取转诊单']),
+    ct('联系方式',['24 小时值班|010-0000 0001|夜间与节假日急诊','门诊咨询|010-0000 0002|工作日 8:00-17:30','张老师|13800000000|医保报销咨询']),
+    tip('报销请保留：处方、缴费票据、病历本。夜间急诊请先电话联系值班医生。')
+  ]),
+  N('🔧','维修报修','水电门窗 / 公共设施',[
+    info('服务说明',['报修范围|宿舍及公共区域水电、门窗、家具','响应时限|一般故障 24 小时内','紧急故障|漏水、断电 2 小时内','是否收费|人为损坏按价目表收费']),
+    steps('报修流程',['线上提交：后勤服务号 - 报修申请','填写楼栋、房间号与故障描述','可上传现场照片','等待派单短信','维修师傅上门，现场确认','完成后在系统中评价并签字']),
+    ct('联系方式',['报修热线|010-0000 0003|7:30-20:00','夜间应急|010-0000 0004|断电、跑水','水电班 李师傅|13800000001'])
+  ]),
+  N('🍽️','食堂餐饮','一 / 二 / 三食堂',[
+    info('食堂分布',['第一食堂|生活区西侧，一层大众餐，二层风味','第二食堂|教学区东侧，含清真窗口','第三食堂|研究生公寓旁，供应夜宵至 22:30','就餐卡|校园卡或微信扫码均可']),
+    steps('就餐与反馈',['开餐前检查当日菜价公示','选餐后刷卡或扫码支付','发现食品安全问题当场联系值班经理','或拨打监督电话并保留小票']),
+    ct('联系方式',['食堂值班经理|010-0000 0005|开餐时段','食品安全监督|010-0000 0006','王经理|13800000002|团餐预订'])
+  ]),
+  N('🛏️','学生宿舍','入住 / 调宿 / 退宿',[
+    info('基本信息',['办公地点|学生公寓管理中心（3 号楼 102）','办理时间|工作日 9:00-11:30、14:00-17:00','住宿费|按学年统一缴纳','门禁时间|23:00 至次日 6:00']),
+    steps('入住办理',['持录取通知书与身份证到公寓中心','签订住宿协议','领取钥匙与资产清单','核对房间设施并签字确认']),
+    steps('调宿 / 退宿',['向辅导员提交申请并签字','公寓中心审核床位情况','办理资产交接与钥匙回收','退宿需在离校前 3 个工作日完成']),
+    ct('联系方式',['公寓管理中心|010-0000 0007','夜间值班|010-0000 0008|门禁与突发情况'])
+  ]),
+  N('💧','水电缴费','充值 / 查询 / 故障',[
+    info('缴费方式',['线上|后勤服务号 - 水电缴费','线下|综合楼一层 101 服务大厅','电费标准|居民合表电价（示例）','冷水|按学期定量，超额付费']),
+    steps('充值流程',['进入服务号选择楼栋与房间号','输入金额并支付','系统自动下发到电表','若 10 分钟未到账请联系值班室']),
+    ct('联系方式',['水电值班室|010-0000 0009','报修|见“维修报修”栏目'])
+  ]),
+  N('📦','快递收发','菜鸟驿站 / 快递柜',[
+    info('取件信息',['菜鸟驿站|生活区 B 座一层，9:00-20:00','智能柜|各公寓楼下，24 小时','取件码|短信或菜鸟 App','大件|驿站旁临时堆放区']),
+    steps('寄件流程',['打包并填写收件信息','驿站扫码下单并支付','保留寄件凭证','禁寄物品请提前咨询']),
+    ct('联系方式',['驿站电话|010-0000 0010','快递柜客服|400-000-0000'])
+  ]),
+  N('💳','校园卡服务','办卡 / 补卡 / 充值',[
+    info('基本信息',['服务点|综合楼一层 101 卡务中心','办理时间|工作日 9:00-16:30','补卡工本费|20 元（示例）','挂失|即时生效']),
+    steps('补办流程',['先在服务号或自助机挂失','携身份证到卡务中心','缴纳工本费','现场制卡并激活','原卡余额 24 小时内转入']),
+    ct('联系方式',['卡务中心|010-0000 0011','自助机故障|010-0000 0012'])
+  ]),
+  N('🚌','班车出行','通勤车 / 校区间班车',[
+    info('班次信息',['中心→东校区|7:00、9:00、13:30、17:30','中心→南校区|7:30、12:00、18:00','乘车点|中心校区南门广场','票价|教职工凭证免费（示例）']),
+    steps('乘车须知',['提前 5 分钟到乘车点候车','出示校园卡或乘车码','班车时刻以每学期公告为准','节假日班次另行通知']),
+    ct('联系方式',['车队调度|010-0000 0013|6:30-20:00'])
+  ])
+ ]),
+ N('🏛️','东校区','分校区 · 常用服务',[
+   info('校区信息',['地址|东校区（示例，请按实际修改）','物业值班|010-0000 0020','服务时间|工作日 8:00-17:00'])
+ ],[
+  N('🏥','医务室','门诊 / 急诊',[
+    info('基本信息',['位置|东校区 5 号楼一层','门诊时间|工作日 8:30-11:30、14:00-17:00','急诊|24 小时值班电话']),
+    steps('就诊流程',['挂号（校园卡 / 身份证）','候诊叫号','问诊与缴费','取药或治疗','需转诊时开具转诊单']),
+    ct('联系方式',['值班电话|010-0000 0021|24 小时','门诊|010-0000 0022'])
+  ]),
+  N('🔧','维修报修','水电 / 门窗 / 家具',[
+    info('服务说明',['报修方式|服务号线上报修或电话','响应时限|一般故障 24 小时内','紧急故障|2 小时内']),
+    steps('报修流程',['线上填写楼栋与故障描述','等待派单','师傅上门维修','确认完成并评价']),
+    ct('联系方式',['报修热线|010-0000 0023|7:30-19:30'])
+  ]),
+  N('🍽️','食堂餐饮','东苑食堂',[
+    info('食堂信息',['位置|东校区生活区中部','开餐时间|早餐 6:30-9:00，午 11:00-13:00，晚 17:00-19:30','特色窗口|二层风味与清真窗口']),
+    ct('联系方式',['食堂值班|010-0000 0024'])
+  ]),
+  N('🛏️','学生公寓','入住 / 调宿',[
+    info('基本信息',['办公地点|东校区公寓管理办公室','门禁时间|23:00','热水供应|17:00-23:00']),
+    steps('办理流程',['提交申请并经辅导员签字','公寓办审核','资产交接与领钥匙']),
+    ct('联系方式',['公寓办|010-0000 0025'])
+  ]),
+  N('🚿','浴室与开水','开放时间',[
+    info('开放时间',['浴室|16:30-22:30','开水房|6:30-22:30','位置|东校区生活区一层']),
+    tip('水温异常或设施损坏请直接联系值班室。'),
+    ct('联系方式',['值班室|010-0000 0026'])
+  ])
+ ]),
+ N('🌳','南校区','分校区 · 基础保障',[
+   info('校区信息',['地址|南校区（示例，请按实际修改）','物业值班|010-0000 0030'])
+ ],[
+  N('🏥','医务室','门诊 / 应急',[
+    info('基本信息',['位置|南校区综合楼一层','门诊时间|工作日 8:30-16:30','应急|夜间电话值班']),
+    ct('联系方式',['值班电话|010-0000 0031'])
+  ]),
+  N('🧹','物业服务','保洁 / 绿化 / 设施',[
+    info('服务范围',['公共区域保洁|每日两次','绿化养护|每周巡检','设施巡检|每月一次']),
+    steps('报事流程',['联系物业值班登记','现场确认问题','安排人员处理','回访确认']),
+    ct('联系方式',['物业值班|010-0000 0032'])
+  ]),
+  N('🍽️','食堂','南苑餐厅',[
+    info('食堂信息',['位置|南校区生活区','开餐时间|早 7:00-9:00，午 11:00-13:00，晚 17:00-19:00']),
+    ct('联系方式',['餐厅值班|010-0000 0033'])
+  ])
+ ])
+]};
+
+/* ============ 数据存取 ============ */
+function loadData(){
+  try{var s=localStorage.getItem(K.data);if(s)return JSON.parse(s);}catch(e){}
+  return null;
+}
+function save(){
+  try{localStorage.setItem(K.data,JSON.stringify(data));return true;}
+  catch(e){toast('保存失败：浏览器存储已满，请先导出备份并减少大图');return false;}
+}
+(function init(){
+  if(window.__SEED__){data=window.__SEED__;}
+  else{data=loadData()||JSON.parse(JSON.stringify(SAMPLE));}
+  if(!data.footer)data.footer=DEF_FOOTER;
+  if(!data.nodes)data.nodes=[];
+  try{favs=JSON.parse(localStorage.getItem(K.fav)||'[]');}catch(e){favs=[];}
+  editMode=false;
+  try{
+    cloud=(window.WorkBuddyCloud&&window.__CLOUD_CONFIG__)
+      ?WorkBuddyCloud.createWorkBuddyCloud({endpoint:window.__CLOUD_CONFIG__.endpoint,publishableKey:window.__CLOUD_CONFIG__.publishableKey})
+      :null;
+  }catch(e){cloud=null;}
+})();
+
+/* ============ 云端同步与管理员登录 ============ */
+var CLOUD_HEAD='<script src="https://cdn.jsdelivr.net/npm/@tencent-ai/workbuddy-cloud-sdk@dev/lib/index.global.js"><\/script>\n'
+  +'<script>window.__CLOUD_CONFIG__='+JSON.stringify(window.__CLOUD_CONFIG__||null)+';<\/script>';
+function canEdit(){return !!(cloud&&me&&cloudRow&&cloudRow.owner_id===me.id);}
+function needInit(){return !!(cloud&&me&&!cloudRow);}
+function cacheLocal(){try{localStorage.setItem(K.data,JSON.stringify(data));}catch(e){}}
+function adoptPayload(p){
+  data=p||{};
+  if(!data.footer)data.footer=DEF_FOOTER;
+  if(!data.nodes)data.nodes=[];
+  if(!data.title)data.title='后勤综合服务指南';
+}
+async function refreshMe(){
+  if(!cloud){me=null;return;}
+  try{
+    var s=await cloud.auth.getSession();
+    var u=(s&&s.data&&s.data.user)||(s&&s.data&&s.data.session&&s.data.session.user)||null;
+    me=u?{id:u.id||u.uid||u.user_id,email:u.email}:null;
+  }catch(e){me=null;}
+}
+function setOnline(v){if(cloudOnline===v)return;cloudOnline=v;if(!editMode)render();}
+async function loadCloud(){
+  if(!cloud)return;
+  try{
+    var r=await cloud.database.from('guide_content').select('id,owner_id,updated_at,payload').order('id',{ascending:true}).limit(1);
+    if(r.error){setOnline(false);return;}
+    setOnline(true);
+    var row=(r.data&&r.data[0])||null;
+    var changed=(!row&&cloudRow)||(row&&(!cloudRow||row.updated_at!==cloudRow.updated_at));
+    cloudRow=row;
+    if(cloudRow&&cloudRow.payload&&changed){
+      adoptPayload(cloudRow.payload);cacheLocal();
+      if(!editMode)render();
+    }
+  }catch(e){setOnline(false);}
+}
+async function publishCloud(){
+  if(!cloud){toast('未连接云服务，无法发布');return;}
+  if(!me){authModal();toast('请先登录管理员账号');return;}
+  toast('发布中…');
+  var payload={title:data.title,footer:data.footer,nodes:data.nodes};
+  try{
+    if(cloudRow){
+      if(!canEdit()){toast('没有权限：该账号不能修改这份内容');return;}
+      var r=await cloud.database.from('guide_content').update({payload:payload}).eq('id',cloudRow.id).select();
+      if(r.error){toast('发布失败：'+r.error.message);return;}
+      if(!r.data||!r.data.length){toast('没有权限：这份内容由其他账号创建');return;}
+      cloudRow=r.data[0];
+    }else{
+      var r2=await cloud.database.from('guide_content').insert({payload:payload,note:'初始化'}).select();
+      if(r2.error){toast('初始化失败：'+(r2.error.code==='42501'?'内容已存在，请刷新页面重试':r2.error.message));return;}
+      cloudRow=(r2.data&&r2.data[0])||null;
+    }
+    cacheLocal();
+    toast('已发布，所有人打开链接即可看到最新内容');
+    render();
+  }catch(e){toast('网络异常，发布失败，请稍后重试');}
+}
+/* ---- 登录 / 注册 / 找回密码 ---- */
+function authModal(){
+  if(!cloud){
+    modal('无法登录','<div class="hint">当前页面没有连接云服务（例如直接打开本地文件）。请通过正式网址打开后再登录。</div>',
+      [{text:'知道了',cls:'btn-p',cb:closeModal}]);
+    return;
+  }
+  var body='<div class="fld"><label>管理员邮箱</label><input type="email" id="a-mail" autocomplete="username" placeholder="name@school.edu.cn"></div>'
+    +'<div class="fld"><label>密码</label><input type="password" id="a-pass" autocomplete="current-password"></div>'
+    +'<button class="mini" id="a-otp">用邮箱验证码登录 / 注册 ›</button>'
+    +'<button class="mini" id="a-forgot">忘记密码 ›</button>'
+    +'<div class="hint">第一位注册并「初始化内容」的账号即为唯一管理员，之后注册的账号即使登录也只能浏览。（邮箱仅用于登录，不会展示给访客）</div>';
+  modal('管理员登录',body,[
+    {text:'登录',cls:'btn-p',cb:function(root){
+      var mail=root.querySelector('#a-mail').value.trim(),pass=root.querySelector('#a-pass').value;
+      if(!mail||!pass){toast('请填写邮箱和密码');return;}
+      doLogin(mail,pass);
+    }},
+    {text:'关闭',cb:closeModal}
+  ]);
+  $('a-otp').addEventListener('click',otpModal);
+  $('a-forgot').addEventListener('click',forgotModal);
+}
+async function doLogin(mail,pass){
+  toast('登录中…');
+  try{
+    var r=await cloud.auth.signInWithPassword({email:mail,password:pass});
+    if(r.error){toast(r.error.message||'邮箱或密码不正确');return;}
+    await afterSignIn();
+  }catch(e){toast('登录失败，请稍后重试');}
+}
+async function afterSignIn(){
+  await refreshMe();
+  if(!me){toast('登录状态异常，请重试');return;}
+  closeModal();
+  await loadCloud();
+  render();
+  if(!cloudRow){toast('登录成功：你现在可以在菜单里初始化内容，成为管理员');}
+  else if(canEdit()){toast('管理员已登录，内容可以修改了');}
+  else{toast('登录成功，但该账号没有修改权限');}
+}
+function otpModal(){
+  modal('验证码登录 / 注册',
+    '<div class="fld"><label>邮箱</label><input type="email" id="o-mail" placeholder="name@school.edu.cn"></div>'
+    +'<button class="mini" id="o-send">发送验证码</button>'
+    +'<div id="o-step2" style="display:none;margin-top:10px">'
+    +'<div class="fld"><label>邮件中的验证码</label><input type="text" id="o-code"></div>'
+    +'<div class="fld" id="o-passbox"><label>设置登录密码</label><input type="password" id="o-pass"><div class="hint">首次注册需设置至少 6 位密码，之后可直接用邮箱 + 密码登录</div></div>'
+    +'<button class="mini" id="o-verify">验证并登录</button></div>',
+    [{text:'关闭',cb:closeModal}]);
+  var st={};
+  $('o-send').addEventListener('click',async function(){
+    var mail=$('o-mail').value.trim();if(!mail){toast('请填写邮箱');return;}
+    toast('发送中…');
+    try{
+      var r=await cloud.auth.sendOtp({email:mail});
+      if(r.error){toast(r.error.message||'发送失败');return;}
+      st=r.data||{};st.email=mail;
+      $('o-step2').style.display='';
+      if(st.isExistingUser)$('o-passbox').style.display='none';
+      toast('验证码已发送，请查收邮件');
+    }catch(e){toast('网络异常，请重试');}
+  });
+  $('o-verify').addEventListener('click',async function(){
+    if(!st.verificationId){toast('请先发送验证码');return;}
+    var code=$('o-code').value.trim();if(!code){toast('请填写验证码');return;}
+    var pwd=st.isExistingUser?undefined:$('o-pass').value;
+    if(!st.isExistingUser&&(!pwd||pwd.length<6)){toast('请设置至少 6 位密码');return;}
+    try{
+      var r=await cloud.auth.verifyOtp({verificationId:st.verificationId,token:code,email:st.email,isExistingUser:st.isExistingUser,password:pwd});
+      if(r.error){toast(r.error.message||'验证码不正确');return;}
+      await afterSignIn();
+    }catch(e){toast('验证失败，请重试');}
+  });
+}
+function forgotModal(){
+  modal('找回密码',
+    '<div class="fld"><label>注册邮箱</label><input type="email" id="g-mail"></div>'
+    +'<button class="mini" id="g-send">发送验证码</button>'
+    +'<div id="g-step2" style="display:none;margin-top:10px">'
+    +'<div class="fld"><label>验证码</label><input type="text" id="g-code"></div>'
+    +'<div class="fld"><label>新密码</label><input type="password" id="g-pass"><div class="hint">至少 6 位</div></div>'
+    +'<button class="mini" id="g-reset">确认重置</button></div>',
+    [{text:'关闭',cb:closeModal}]);
+  var st={};
+  $('g-send').addEventListener('click',async function(){
+    var mail=$('g-mail').value.trim();if(!mail){toast('请填写邮箱');return;}
+    toast('发送中…');
+    try{
+      var r=await cloud.auth.resetPasswordForEmail(mail);
+      if(r.error){toast(r.error.message||'发送失败');return;}
+      st=r.data||{};$('g-step2').style.display='';toast('验证码已发送');
+    }catch(e){toast('网络异常');}
+  });
+  $('g-reset').addEventListener('click',async function(){
+    if(!st.updateUser){toast('请先发送验证码');return;}
+    var code=$('g-code').value.trim(),np=$('g-pass').value;
+    if(!code){toast('请填写验证码');return;}
+    if(!np||np.length<6){toast('新密码至少 6 位');return;}
+    try{
+      var r=await st.updateUser({nonce:code,password:np});
+      if(r&&r.error){toast(r.error.message||'重置失败');return;}
+      toast('密码已重置，请重新登录');closeModal();
+    }catch(e){toast('重置失败，请重试');}
+  });
+}
+async function doSignOut(){
+  try{if(cloud)await cloud.auth.signOut();}catch(e){}
+  me=null;editMode=false;render();toast('已退出登录');
+}
+function syncBar(){
+  if(!cloud||!cloudOnline)return '<div class="sync off">尚未连接云端 · 当前显示的是本机缓存内容，联网后会自动更新</div>';
+  if(me)return '<div class="sync '+(canEdit()?'ok':'warn')+'">'
+    +(needInit()?'管理员已登录 · 尚未初始化内容':'管理员已登录（'+(canEdit()?'可修改':'该账号无修改权限')+'）')
+    +'<button data-act="signout" style="float:right;color:inherit;opacity:.75">退出</button></div>';
+  return '';
+}
+
+/* ============ 树操作 ============ */
+function walk(nodes,fn,parent,depth){
+  depth=depth||0;
+  for(var i=0;i<nodes.length;i++){
+    var n=nodes[i];
+    if(fn(n,parent,depth,nodes,i)===false)return false;
+    if(n.children&&n.children.length)walk(n.children,fn,n,depth+1);
+  }
+}
+function find(id){
+  var r=null;
+  walk(data.nodes,function(n){if(n.id===id){r=n;return false;}});
+  return r;
+}
+function parentOf(id){
+  var r=null;
+  walk(data.nodes,function(n,p){if(n.id===id){r=p;return false;}});
+  return r;
+}
+function pathOf(id){
+  var path=[];
+  (function rec(nodes,stack){
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i],s=stack.concat([n]);
+      if(n.id===id){path=s;return true;}
+      if(n.children&&rec(n.children,s))return true;
+    }
+    return false;
+  })(data.nodes,[]);
+  return path;
+}
+function removeNode(id){
+  walk(data.nodes,function(n,p,depth,arr,idx){if(n.id===id){arr.splice(idx,1);return false;}});
+}
+
+/* ============ 渲染 ============ */
+function blockHTML(b,node,i){
+  var h='<div class="block">';
+  if(editMode){
+    h+='<div class="ed-act">'
+      +'<button data-act="mv-blk" data-i="'+i+'" data-d="-1" title="上移">↑</button>'
+      +'<button data-act="mv-blk" data-i="'+i+'" data-d="1" title="下移">↓</button>'
+      +'<button data-act="ed-blk" data-i="'+i+'">✎</button>'
+      +'<button class="del" data-act="del-blk" data-i="'+i+'">✕</button></div>';
+  }
+  if(b.type==='info'){
+    h+='<h3>'+esc(b.title||'基本信息')+'</h3>';
+    (b.items||[]).forEach(function(it){
+      if(!it.label&&!it.value)return;
+      h+='<div class="kv"><div class="k">'+esc(it.label)+'</div><div class="v">'+esc(it.value)+'</div></div>';
+    });
+  }else if(b.type==='steps'){
+    h+='<h3>'+esc(b.title||'办理流程')+'</h3><ol class="steps">';
+    (b.items||[]).forEach(function(s,k){if(String(s).trim())h+='<li data-i="'+(k+1)+'">'+esc(s)+'</li>';});
+    h+='</ol>';
+  }else if(b.type==='contact'){
+    h+='<h3>'+esc(b.title||'联系方式')+'</h3>';
+    (b.items||[]).forEach(function(it){
+      h+='<div class="ct"><div style="flex:1"><div class="n">'+esc(it.name)+'</div>'
+        +(it.note?'<div class="nt">'+esc(it.note)+'</div>':'')+'</div>'
+        +(it.phone?'<a class="p" href="tel:'+esc(it.phone.replace(/[^\d+\-]/g,''))+'">'+esc(it.phone)+'</a>':'')+'</div>';
+    });
+  }else if(b.type==='text'){
+    h+=(b.title?'<h3>'+esc(b.title)+'</h3>':'')+'<div class="text">'+esc(b.value)+'</div>';
+  }else if(b.type==='tip'){
+    h+='<div class="tip">'+esc(b.value)+'</div>';
+  }else if(b.type==='image'){
+    if(b.src)h+='<img class="blk-img" src="'+esc(b.src)+'">';
+    else h+='<div class="tip">（图片未上传）</div>';
+    if(b.caption)h+='<div class="imgcap">'+esc(b.caption)+'</div>';
+  }else if(b.type==='link'){
+    h+=(b.title?'<h3>'+esc(b.title)+'</h3>':'')+'<a class="linkbtn" href="'+esc(safeUrl(b.url))+'" target="_blank" rel="noopener">'
+      +esc(b.desc||b.url||'打开链接')+(b.desc?'<span class="sub">'+esc(b.url)+'</span>':'')+'</a>';
+  }
+  return h+'</div>';
+}
+function cardHTML(n,parentId){
+  var h='<button class="card" data-act="go" data-id="'+n.id+'">';
+  h+='<div class="ic">'+(n.icon||'📋')+'</div><div class="t">'+esc(n.title)+'</div>';
+  if(n.desc)h+='<div class="d">'+esc(n.desc)+'</div>';
+  if(n.children&&n.children.length&&!editMode)h+='<div class="badge">'+n.children.length+' 项</div>';
+  h+='</button>';
+  if(editMode){
+    h='<div style="position:relative">'+h
+      +'<div class="ed-act"><button data-act="ed-node" data-id="'+n.id+'">✎</button>'
+      +'<button class="del" data-act="del-node" data-id="'+n.id+'">✕</button></div></div>';
+  }
+  return h;
+}
+function rowHTML(n){
+  var sub=n.children&&n.children.length?n.children.length+' 个子项 · ':'';
+  var h='<div class="row" data-act="go" data-id="'+n.id+'">'
+    +'<div class="ic">'+(n.icon||'📋')+'</div>'
+    +'<div class="m"><div class="t">'+esc(n.title)+'</div>'
+    +(n.desc?'<div class="d">'+esc(n.desc)+'</div>':'')+'</div>'
+    +'<div class="arrow">›</div></div>';
+  if(editMode){
+    h='<div style="position:relative">'+h
+      +'<div class="ed-act"><button data-act="mv-node" data-id="'+n.id+'" data-d="-1">↑</button>'
+      +'<button data-act="mv-node" data-id="'+n.id+'" data-d="1">↓</button>'
+      +'<button data-act="ed-node" data-id="'+n.id+'">✎</button>'
+      +'<button class="del" data-act="del-node" data-id="'+n.id+'">✕</button></div></div>';
+  }
+  return h;
+}
+function crumbHTML(path){
+  var h='<div class="crumb"><button data-act="go" data-id="">首页</button>';
+  path.forEach(function(n){h+='<span>/</span><button data-act="go" data-id="'+n.id+'">'+esc(n.title)+'</button>';});
+  return h+'</div>';
+}
+function searchHTML(q){
+  var res=[];
+  walk(data.nodes,function(n){
+    var hay=(n.title+' '+n.desc+' '+JSON.stringify(n.blocks||[])||'').toLowerCase();
+    if(hay.indexOf(q.toLowerCase())>=0)res.push(n);
+  });
+  var h='<div class="sec-title">搜索结果 '+res.length+' 条</div>';
+  if(!res.length)return h+'<div class="empty">没有找到相关服务</div>';
+  h+='<div class="list">';
+  res.forEach(function(n){
+    var p=pathOf(n.id).slice(0,-1).map(function(x){return x.title;}).join(' / ');
+    h+='<div class="row" data-act="go" data-id="'+n.id+'"><div class="ic">'+(n.icon||'📋')+'</div>'
+      +'<div class="m"><div class="t">'+esc(n.title)+'</div><div class="d">'+esc(p||'首页')+'</div></div><div class="arrow">›</div></div>';
+  });
+  return h+'</div>';
+}
+function renderHome(){
+  var v=$('view'),h=syncBar();
+  h+='<div class="search-box"><div class="search-in">'
+    +'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'
+    +'<input id="q" placeholder="搜索服务、地点、电话…" value="'+esc(query)+'"></div></div>';
+  if(query.trim()){v.innerHTML=h+searchHTML(query.trim());bindQ();return;}
+  if(favs.length){
+    h+='<div class="sec-title">我的收藏</div><div class="list">';
+    favs.forEach(function(id){var n=find(id);if(!n)return;
+      h+='<div class="row" data-act="go" data-id="'+n.id+'"><div class="ic">'+(n.icon||'📋')+'</div>'
+        +'<div class="m"><div class="t">'+esc(n.title)+'</div>'+(n.desc?'<div class="d">'+esc(n.desc)+'</div>':'')+'</div>'
+        +'<div class="arrow">›</div></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div class="sec-title">选择校区</div><div class="grid">';
+  data.nodes.forEach(function(n){h+=cardHTML(n,'');});
+  h+='</div>';
+  if(!data.nodes.length)h+='<div class="empty">'+(cloud&&cloudOnline&&!cloudRow?'管理员还没有发布内容。请用第一个账号登录并点「初始化内容」':'内容加载中，请稍候…')+'</div>';
+  h+=footHTML(true);
+  v.innerHTML=h;bindQ();
+}
+function footHTML(withTime){
+  var t=withTime&&cloudRow&&cloudRow.updated_at?new Date(cloudRow.updated_at).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+  return (data.footer?'<div class="page-foot">'+esc(data.footer)+'</div>':'')
+    +(t?'<div class="page-foot-sub">内容更新于 '+esc(t)+'</div>':'');
+}
+function bindQ(){
+  var q=$('q');if(!q)return;
+  q.addEventListener('input',function(){query=q.value;renderHome();var n=$('q');if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length);}});
+}
+function renderNode(id){
+  var n=find(id),v=$('view');
+  if(!n){location.hash='';return;}
+  curId=id;
+  var path=pathOf(id);
+  var h=crumbHTML(path);
+  var isFav=favs.indexOf(id)>=0;
+  h+='<div class="favbar"><button class="favbtn'+(isFav?' on':'')+'" data-act="fav" data-id="'+id+'">'+(isFav?'★ 已收藏':'☆ 收藏此页')+'</button>'
+    +(editMode?'<button class="favbtn" style="margin-left:8px" data-act="ed-node" data-id="'+id+'">✎ 本页资料</button>':'')+'</div>';
+  (n.blocks||[]).forEach(function(b,i){h+=blockHTML(b,n,i);});
+  if(n.children&&n.children.length){
+    h+='<div class="sec-title">'+(n.children.length)+' 个服务 / 子栏目</div><div class="list">';
+    n.children.forEach(function(c){h+=rowHTML(c);});
+    h+='</div>';
+  }
+  if(editMode)h+='<button class="addbtn" data-act="add-blk" data-id="'+id+'">＋ 添加内容块（文字 / 图片 / 流程 / 联系方式）</button>';
+  if(!(n.blocks||[]).length&&!(n.children||[]).length&&!editMode){
+    h+='<div class="empty">此页面暂无内容</div>';
+  }
+  h+=footHTML(false);
+  v.innerHTML=h;
+}
+function render(){
+  document.body.classList.toggle('editing',editMode);
+  $('edit-tip').hidden=!editMode;
+  var id=(location.hash||'').replace(/^#\/?/,'');
+  if(!id){curId=null;renderHome();}
+  else{renderNode(id);}
+  $('btn-back').style.visibility=id?'visible':'hidden';
+  $('tb-title').textContent=id?(find(id)?find(id).title:'后勤服务'):(data.title||'后勤综合服务指南');
+  renderEditBar(id);
+}
+function renderEditBar(id){
+  var e=$('editbar');
+  if(!editMode){e.innerHTML='';return;}
+  var pubBtn='<button data-bar="pub">发布到云端'+(isDirty()?' ●':'')+'</button>';
+  if(!id){
+    e.innerHTML='<div class="editbar"><button data-bar="add-root">＋ 添加校区</button>'+pubBtn+'<button class="ghost" data-bar="exit">退出编辑</button></div>';
+  }else{
+    e.innerHTML='<div class="editbar"><button data-bar="add-child">＋ 子栏目</button><button data-bar="add-blk">＋ 内容块</button>'+pubBtn+'<button class="ghost" data-bar="exit">退出编辑</button></div>';
+  }
+}
+
+/* ============ 弹窗 ============ */
+function modal(title,bodyHTML,btns){
+  var root=$('modal-root');
+  var h='<div class="mask"><div class="modal"><header>'+esc(title)+'<button class="x" data-close="1">×</button></header>'
+    +'<div class="body">'+bodyHTML+'</div><footer>';
+  (btns||[]).forEach(function(b,i){h+='<button class="'+(b.cls||'btn-g')+'" data-bi="'+i+'">'+esc(b.text)+'</button>';});
+  h+='</footer></div></div>';
+  root.innerHTML=h;
+  var mask=root.querySelector('.mask');
+  mask.addEventListener('click',function(e){
+    if(e.target===mask)closeModal();
+    var x=e.target.closest('[data-close]');if(x)closeModal();
+    var b=e.target.closest('[data-bi]');
+    if(b){var f=btns[+b.getAttribute('data-bi')];if(f&&f.cb)f.cb(root);}
+  });
+}
+function closeModal(){$('modal-root').innerHTML='';}
+function fld(label,inner,hint){
+  return '<div class="fld"><label>'+esc(label)+'</label>'+inner+(hint?'<div class="hint">'+esc(hint)+'</div>':'')+'</div>';
+}
+var EMOJI=['🏫','🏥','🍽️','🛏️','🔧','💧','📦','💳','🚌','🧹','🚿','🔑','📋','🅿️','🏦','🧯','📞','🌳','🏛️','⭐','🚗','💡','🧺','🏃'];
+function emojiHTML(cur){
+  var h='<div class="emoji-pick">';
+  EMOJI.forEach(function(e){h+='<button type="button" data-emo="'+e+'" class="'+(e===cur?'sel':'')+'">'+e+'</button>';});
+  return h+'</div>';
+}
+
+/* ============ 节点编辑 ============ */
+function nodeEditor(pid,nid){
+  var node=nid?find(nid):null;
+  var isNew=!node;
+  var cur=(node&&node.icon)||(pid?'📋':'🏫');
+  var body=fld('名称 / 标题','<input type="text" id="f-title" value="'+esc(node?node.title:'')+'" placeholder="如：医务室">')
+    +fld('图标','<input type="text" id="f-icon" value="'+esc(cur)+'">'+emojiHTML(cur))
+    +fld('一句话简介','<input type="text" id="f-desc" value="'+esc(node?node.desc:'')+'" placeholder="如：门诊 / 急诊 / 医保">')
+    +'<div class="hint">提示：如果这一项下面还有细分内容，建立后进入该页面再点“添加子栏目”。</div>';
+  modal(isNew?'添加栏目':'编辑栏目',body,[
+    {text:isNew?'添加':'保存',cls:'btn-p',cb:function(root){
+      var t=root.querySelector('#f-title').value.trim();
+      if(!t){toast('请填写名称');return;}
+      var icon=root.querySelector('#f-icon').value.trim()||'📋';
+      var desc=root.querySelector('#f-desc').value.trim();
+      if(isNew){
+        var nn={id:uid(),icon:icon,title:t,desc:desc,blocks:[],children:[]};
+        if(pid){var p=find(pid);if(p){if(!p.children)p.children=[];p.children.push(nn);}}
+        else data.nodes.push(nn);
+      }else{node.icon=icon;node.title=t;node.desc=desc;}
+      save();closeModal();render();toast('已保存到本机，点「发布到云端」后所有人可见');
+    }},
+    {text:'取消',cb:closeModal}
+  ]);
+  $('modal-root').querySelector('.emoji-pick').addEventListener('click',function(e){
+    var b=e.target.closest('[data-emo]');if(!b)return;
+    $('f-icon').value=b.getAttribute('data-emo');
+    [].forEach.call(this.children,function(x){x.classList.remove('sel');});
+    b.classList.add('sel');
+  });
+}
+
+/* ============ 内容块编辑 ============ */
+var BTYPES=[
+  ['info','信息表','地点 / 时间 / 说明，每行一条：标签|内容'],
+  ['steps','流程步骤','每行一步，自动编号'],
+  ['contact','联系方式','每行一条：姓名|电话|备注'],
+  ['text','纯文字','可换行的大段说明'],
+  ['tip','提示框','黄色高亮提示'],
+  ['image','图片','上传照片，可配文字说明'],
+  ['link','外部链接','跳转到办事系统或网页']
+];
+function pickBlockType(node){
+  var h='';
+  BTYPES.forEach(function(t,i){
+    h+='<button class="mini" data-ti="'+i+'"><b>'+t[1]+'</b><div class="hint">'+esc(t[2])+'</div></button>';
+  });
+  modal('选择内容块类型',h,[{text:'取消',cb:closeModal}]);
+  $('modal-root').querySelector('.body').addEventListener('click',function(e){
+    var b=e.target.closest('[data-ti]');if(!b)return;
+    var t=BTYPES[+b.getAttribute('data-ti')];
+    closeModal();blockEditor(node,null,t[0]);
+  });
+}
+function blockEditor(node,idx,type){
+  var b=(idx!=null)?node.blocks[idx]:{type:type,title:'',items:[],value:'',src:'',caption:'',url:'',desc:''};
+  var isNew=(idx==null);
+  var body='',lines='';
+  if(b.type==='info'||b.type==='steps'||b.type==='contact'){
+    if(b.type==='info')lines=(b.items||[]).map(function(i){return i.label+'|'+i.value;}).join('\n');
+    if(b.type==='steps')lines=(b.items||[]).join('\n');
+    if(b.type==='contact')lines=(b.items||[]).map(function(i){return [i.name,i.phone,i.note].join('|');}).join('\n');
+    var hint=b.type==='info'?'每行一条，格式：标签|内容（例：位置|中心校区 A 座一层）'
+      :b.type==='steps'?'每行一步，会自动编号':'每行一条，格式：姓名|电话|备注（电话可直接点击拨号）';
+    body=fld('小标题','<input type="text" id="f-bt" value="'+esc(b.title||'')+'">')
+      +fld('内容',('<textarea id="f-bc" style="min-height:150px">'+esc(lines)+'</textarea>'),hint);
+  }else if(b.type==='text'){
+    body=fld('小标题','<input type="text" id="f-bt" value="'+esc(b.title||'')+'">')
+      +fld('正文','<textarea id="f-bc" style="min-height:160px">'+esc(b.value||'')+'</textarea>','换行会原样显示');
+  }else if(b.type==='tip'){
+    body=fld('提示内容','<textarea id="f-bc">'+esc(b.value||'')+'</textarea>');
+  }else if(b.type==='image'){
+    body=fld('说明文字','<input type="text" id="f-bt" value="'+esc(b.caption||'')+'">')
+      +fld('图片','<button class="mini" id="f-pick">选择图片（拍照 / 相册）</button>'
+        +'<input type="file" id="f-file" accept="image/*" style="display:none">'
+        +'<input type="hidden" id="f-src" value="'+esc(b.src||'')+'">'
+        +'<div id="f-prev">'+(b.src?'<img class="img-prev" src="'+esc(b.src)+'">':'')+'</div>','单张建议不超过 2MB，会自动压缩');
+  }else if(b.type==='link'){
+    body=fld('小标题','<input type="text" id="f-bt" value="'+esc(b.title||'')+'">')
+      +fld('按钮文字','<input type="text" id="f-bc" value="'+esc(b.desc||'')+'" placeholder="如：进入报修系统">')
+      +fld('网址','<input type="text" id="f-url" value="'+esc(b.url||'')+'" placeholder="https://…">','留 http 前缀也可自动补全');
+  }
+  var btns=[];
+  if(!isNew)btns.push({text:'删除',cls:'btn-d',cb:function(){
+    if(!confirm('删除这个内容块？'))return;
+    node.blocks.splice(idx,1);save();closeModal();render();toast('已删除');
+  }});
+  btns.push({text:'取消',cb:closeModal});
+  btns.push({text:isNew?'添加':'保存',cls:'btn-p',cb:function(root){
+    var t=root.querySelector('#f-bt')?root.querySelector('#f-bt').value.trim():'';
+    var c=root.querySelector('#f-bc')?root.querySelector('#f-bc').value:'';
+    var nb={type:b.type};
+    if(b.type==='info'||b.type==='steps'||b.type==='contact'){
+      var arr=String(c).split('\n').map(function(s){return s.trim();}).filter(function(s){return s;});
+      nb.title=t||(b.type==='info'?'基本信息':b.type==='steps'?'办理流程':'联系方式');
+      if(b.type==='info'){
+        nb.items=arr.map(function(s){var i=s.indexOf('|');if(i<0)i=s.indexOf('：');if(i<0)i=s.indexOf(':');
+          return i<0?{label:s,value:''}:{label:s.slice(0,i).trim(),value:s.slice(i+1).trim()};});
+      }else if(b.type==='steps'){nb.items=arr;}
+      else{nb.items=arr.map(function(s){var p=s.split('|');return {name:p[0]||'',phone:p[1]||'',note:p[2]||''};});}
+    }else if(b.type==='text'){nb.title=t;nb.value=String(c);}
+    else if(b.type==='tip'){nb.value=String(c);}
+    else if(b.type==='image'){nb.caption=t;nb.src=root.querySelector('#f-src').value;}
+    else if(b.type==='link'){nb.title=t;nb.desc=c.trim();nb.url=root.querySelector('#f-url').value.trim();}
+    if(!node.blocks)node.blocks=[];
+    if(isNew)node.blocks.push(nb);else node.blocks[idx]=nb;
+    if(save()){closeModal();render();toast('已保存到本机，点「发布到云端」后所有人可见');}
+  }});
+  modal(isNew?'添加内容块':'编辑内容块',body,btns);
+  if(b.type==='image'){
+    var pick=$('f-pick'),file=$('f-file');
+    pick.addEventListener('click',function(){file.click();});
+    file.addEventListener('change',function(){
+      if(!file.files||!file.files[0])return;
+      toast('处理中…');
+      compressImg(file.files[0],function(d){
+        $('f-src').value=d;
+        $('f-prev').innerHTML='<img class="img-prev" src="'+d+'">';
+        toast('图片已就绪，记得点保存');
+      });
+    });
+  }
+}
+
+/* ============ 菜单 ============ */
+function openMenu(){
+  var h='';
+  if(!cloud)h+='<div class="hint" style="margin-bottom:10px">未连接云服务：当前只能改本机内容，其他人不会看到。请通过正式网址打开本页面。</div>';
+  if(!me){
+    h+='<button class="mini" data-m="login"><b>管理员登录</b><div class="hint">第一位注册并初始化内容的账号，将成为唯一拥有修改权限的管理员</div></button>';
+  }else{
+    h+='<div class="hint" style="margin-bottom:10px">已登录：'+esc(me.email||'管理员')
+      +(needInit()?' · 尚未初始化内容':canEdit()?' · 唯一管理员':' · 该账号无修改权限')+'</div>';
+    if(needInit())h+='<button class="mini" data-m="init"><b>初始化内容</b><div class="hint">把当前内容上传为第一版，此账号成为唯一管理员</div></button>';
+    else if(canEdit()){
+      h+='<button class="mini" data-m="edit">'+(editMode?'✓ 退出编辑模式':'开启编辑模式')+'</button>';
+      h+='<button class="mini" data-m="pub"><b>发布到云端</b><div class="hint">发布后所有人打开链接即刻看到最新内容'+(isDirty()?'（当前有未发布改动）':'（当前已是最新）')+'</div></button>';
+    }
+    h+='<button class="mini" data-m="logout">退出登录</button>';
+  }
+  h+=((canEdit()||needInit())
+      ?'<button class="mini" data-m="json">导出数据备份（JSON）</button>'
+       +'<button class="mini" data-m="imp">从备份导入（JSON）</button>'
+       +'<button class="mini" data-m="html">导出离线网页（HTML 快照）</button>'
+       +'<button class="mini" data-m="title">修改标题 / 页脚署名</button>'
+       +(canEdit()?'<button class="mini warn" data-m="reset">载入示例内容（覆盖本机草稿）</button>':'')
+      :'')
+    +'<div class="hint" style="margin-top:10px">工作方式：管理员登录后编辑内容，改动先存在本机；点「发布到云端」后，所有人的链接立即更新，不需要重新发布或重新分享。<br>安全保障：权限由服务端校验，只有第一位初始化内容的账号能改写内容，其余账号即使注册登录也只能浏览，页面上也没有任何编辑入口。<br><br>编辑说明：开启编辑模式后，卡片和文字块右上角出现 ✎（编辑）、✕（删除）与上下移动；底部工具栏可新增栏目和内容块。图片建议每张不超过 2MB。</div>';
+  modal('设置与管理',h,[{text:'关闭',cb:closeModal}]);
+  $('modal-root').querySelector('.body').addEventListener('click',function(e){
+    var b=e.target.closest('[data-m]');if(!b)return;
+    var m=b.getAttribute('data-m');closeModal();
+    if(m==='login'){authModal();}
+    else if(m==='init'){publishCloud();}
+    else if(m==='edit'){
+      if(editMode){editMode=false;render();toast('已退出编辑模式');}
+      else if(canEdit()){editMode=true;render();toast('已进入编辑模式，改动发布后别人才看得到');}
+      else{toast('该账号没有修改权限');}
+    }
+    else if(m==='pub'){publishCloud();}
+    else if(m==='logout'){doSignOut();}
+    else if(m==='json'){download('后勤服务数据备份.json',JSON.stringify(data,null,2),'application/json');toast('已导出备份');}
+    else if(m==='imp'){if(!canEdit()&&!needInit()){toast('只有管理员可以导入备份');return;}
+      var f=document.createElement('input');f.type='file';f.accept='.json,application/json';
+      f.onchange=function(){var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);
+          if(!o||!o.nodes)throw 0;if(!confirm('导入将覆盖当前内容，继续？'))return;
+          adoptPayload(o);save();render();toast('已导入，记得点「发布到云端」');}catch(e){toast('文件格式不正确');}};
+        f.files[0]&&r.readAsText(f.files[0]);};f.click();}
+    else if(m==='html'){exportHTML();}
+    else if(m==='title'){if(!canEdit()&&!needInit()){toast('只有管理员可以修改');return;}titleEditor();}
+    else if(m==='reset'){if(confirm('将清空当前所有内容并恢复为示例，确定？')){adoptPayload(JSON.parse(JSON.stringify(SAMPLE)));save();render();toast('已载入示例，记得点「发布到云端」');}}
+  });
+}
+function isDirty(){
+  if(!cloudRow||!cloudRow.payload)return true;
+  try{
+    return JSON.stringify({title:data.title,footer:data.footer,nodes:data.nodes})
+      !==JSON.stringify({title:cloudRow.payload.title,footer:cloudRow.payload.footer,nodes:cloudRow.payload.nodes});
+  }catch(e){return true;}
+}
+function titleEditor(){
+  modal('标题与署名',
+    '<div class="fld"><label>网站标题（显示在顶部）</label><input type="text" id="f-t" value="'+esc(data.title||'')+'"></div>'
+    +'<div class="fld"><label>页脚署名（显示在每个页面底部）</label><input type="text" id="f-f" value="'+esc(data.footer||'')+'"></div>',[
+    {text:'保存',cls:'btn-p',cb:function(root){
+      data.title=root.querySelector('#f-t').value.trim()||'后勤综合服务指南';
+      data.footer=root.querySelector('#f-f').value.trim();
+      save();closeModal();render();toast('已保存，发布后别人才能看到');}},
+    {text:'取消',cb:closeModal}
+  ]);
+}
+function exportHTML(){
+  var t=window.__APP_TPL__;
+  if(!t){toast('导出功能不可用');return;}
+  var title=esc(data.title||'后勤综合服务指南');
+  var html='<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n<meta charset="utf-8">\n'
+    +'<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
+    +'<meta name="theme-color" content="#1668dc">\n<title>'+title+'<\/title>\n'
+    +CLOUD_HEAD+'\n<style>'+t.css+'<\/style>\n<\/head>\n<body>\n'
+    +t.body+'\n<script>window.__SEED__='+JSON.stringify(data).replace(/</g,'\\u003c')+';<\/script>\n'
+    +'<script>'+t.js+'<\/script>\n<\/body>\n<\/html>';
+  download('后勤服务指南-离线快照.html',html,'text/html;charset=utf-8');
+  toast('已导出离线快照（内容固定，不会随云端更新）');
+}
+
+/* ============ 事件 ============ */
+function go(id){
+  if(id){location.hash='#/'+id;}else{location.hash='';}
+  query='';
+}
+$('btn-back').addEventListener('click',function(){
+  if(location.hash){
+    var p=parentOf(curId);
+    if(p)location.hash='#/'+p.id;else location.hash='';
+  }
+});
+$('btn-menu').addEventListener('click',openMenu);
+$('view').addEventListener('click',function(e){
+  if(e.target.classList&&e.target.classList.contains('blk-img')){
+    var r=$('modal-root');
+    r.innerHTML='<div class="mask" style="align-items:center;background:rgba(0,0,0,.92)"><img src="'+esc(e.target.getAttribute('src'))+'" style="max-width:100%;max-height:94vh;object-fit:contain"></div>';
+    r.querySelector('.mask').addEventListener('click',function(){r.innerHTML='';});
+    return;
+  }
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var a=b.getAttribute('data-act');
+  if(a==='go'){go(b.getAttribute('data-id'));return;}
+  var id=b.getAttribute('data-id')||curId;
+  if(a==='fav'){
+    var i=favs.indexOf(id);
+    if(i>=0)favs.splice(i,1);else favs.push(id);
+    try{localStorage.setItem(K.fav,JSON.stringify(favs));}catch(x){}
+    render();toast(i>=0?'已取消收藏':'已加入收藏');
+  }else if(a==='ed-node'){nodeEditor(parentOf(id)?parentOf(id).id:'',id);}
+  else if(a==='del-node'){
+    var n=find(id);
+    if(!confirm('删除“'+(n?n.title:'')+'”及其下所有内容？'))return;
+    removeNode(id);save();render();toast('已删除');
+  }
+  else if(a==='mv-node'){
+    var p=parentOf(id),arr=p?p.children:data.nodes,d=+b.getAttribute('data-d');
+    for(var i=0;i<arr.length;i++){if(arr[i].id===id){var j=i+d;if(j<0||j>=arr.length)return;
+      var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;save();render();return;}}
+  }
+  else if(a==='add-blk'){pickBlockType(find(id));}
+  else if(a==='ed-blk'){blockEditor(find(id),+b.getAttribute('data-i'));}
+  else if(a==='del-blk'){
+    if(!confirm('删除这个内容块？'))return;
+    find(id).blocks.splice(+b.getAttribute('data-i'),1);save();render();toast('已删除');
+  }
+  else if(a==='mv-blk'){
+    var nn=find(id),i2=+b.getAttribute('data-i'),d2=+b.getAttribute('data-d'),j2=i2+d2;
+    if(j2<0||j2>=nn.blocks.length)return;
+    var t2=nn.blocks[i2];nn.blocks[i2]=nn.blocks[j2];nn.blocks[j2]=t2;save();render();
+  }
+  else if(a==='signout'){doSignOut();}
+});
+$('editbar').addEventListener('click',function(e){
+  var b=e.target.closest('[data-bar]');if(!b)return;
+  var m=b.getAttribute('data-bar');
+  if(m==='exit'){editMode=false;render();toast('已退出编辑模式');}
+  else if(m==='add-root'){nodeEditor('',null);}
+  else if(m==='add-child'){nodeEditor(curId,null);}
+  else if(m==='add-blk'){pickBlockType(find(curId));}
+  else if(m==='pub'){publishCloud();}
+});
+window.addEventListener('hashchange',render);
+render();
+/* 云端同步：进入时拉取最新，前台切换与每 60 秒自动刷新 */
+(function startCloud(){
+  if(!cloud)return;
+  refreshMe().then(function(){if(me){loadCloud();render();}});
+  loadCloud();
+  setInterval(function(){if(!document.hidden)loadCloud();},60000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)loadCloud();});
+})();
+})();
+</script>
+
 <script>
-  document.getElementById('t').textContent = new Date().toLocaleString('zh-CN');
+(function(){
+  var css=document.getElementById('app-css').textContent;
+  var body=document.getElementById('tpl-body').textContent;
+  var js=document.getElementById('app-js').textContent;
+  window.__APP_TPL__={css:css,body:body,js:js};
+  document.body.innerHTML=body;
+  var s=document.createElement('script');s.textContent=js;document.body.appendChild(s);
+})();
 </script>
 </body>
 </html>
