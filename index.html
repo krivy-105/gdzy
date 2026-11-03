@@ -1,34 +1,42 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIRFA · 机房主机公网入口</title>
-<meta name="description" content="机房主机的公网入口页，含在线演示与项目索引。">
-<style>
-:root{--bg:#0b0d12;--fg:#e8ecf4;--mut:#8b95ab;--ac:#5eead4;--card:#141824}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
-.wrap{max-width:760px;margin:0 auto;padding:64px 22px}
-h1{font-size:40px;margin:0 0 8px;letter-spacing:.02em}
-.sub{color:var(--mut);margin:0 0 32px}
-.card{background:var(--card);border:1px solid #1f2534;border-radius:14px;padding:20px 22px;margin:14px 0}
-.card h3{margin:0 0 6px;font-size:17px}
-.card p{margin:0;color:var(--mut);font-size:14.5px}
-a{color:var(--ac);text-decoration:none}
-.btn{display:inline-block;background:#1c2333;border:1px solid #2a3448;border-radius:10px;padding:10px 16px;margin:10px 8px 0 0;font-size:14.5px}
-.btn:hover{border-color:var(--ac)}
-footer{color:#5d677c;font-size:12.5px;margin-top:40px;border-top:1px solid #1c2231;padding-top:16px}
-</style></head><body><div class="wrap">
-<h1>AIRFA</h1>
-<p class="sub">机房主机的公网入口 · 域名 gdzyhqb.v6.rocks</p>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AIRFA · 机房主机公网入口</title>
+  <meta name="description" content="AIRFA 的个人站点：项目、实验与技术记录。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AIRFA</h1>
+    <p class="sub">机房主机公网入口 · <code>gdzyhqb.v6.rocks</code></p>
+  </header>
 
-<div class="card"><h3>在线演示</h3>
-<p>机房主机直出页面，经 Cloudflare 隧道回源，标准 443。</p>
-<a class="btn" href="https://masters-hottest-isolated-stanley.trycloudflare.com">打开演示站</a></div>
+  <section class="card">
+    <h3>在线演示</h3>
+    <p>机房这台机器上直接跑的服务，经 Cloudflare 隧道回源，标准 443。</p>
+    <a class="btn" href="https://masters-hottest-isolated-stanley.trycloudflare.com">打开演示站</a>
+  </section>
 
-<div class="card"><h3>这是什么</h3>
-<p>gdzyhqb.v6.rocks 用 GitHub Pages 托管，负责给机器上跑的服务提供一个短、稳、带证书的入口名。</p></div>
+  <section class="card">
+    <h3>项目</h3>
+    <p>改这一块就行：把标题、描述、链接换成你写的东西。</p>
+    <a class="btn" href="https://krivy.cyou">主站 krivy.cyou</a>
+  </section>
 
-<div class="card"><h3>其他站点</h3>
-<p>主站：<a href="https://krivy.cyou">krivy.cyou</a></p></div>
+  <section class="card">
+    <h3>怎么部署</h3>
+    <p>改完文件，在 <code>is-a-dev-register</code> 目录执行 <code>node deploy.mjs site</code>，几十秒后这个页面就更新了。</p>
+  </section>
 
-<footer>由 GitHub Pages 提供 HTTPS · 更新于 2026-11-03</footer>
-</div></body></html>
+  <footer>
+    由 GitHub Pages 提供托管 · <span id="t"></span>
+  </footer>
+</div>
+<script>
+  document.getElementById('t').textContent = new Date().toLocaleString('zh-CN');
+</script>
+</body>
+</html>
